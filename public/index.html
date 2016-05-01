@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Watch Repeat Learn</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
@@ -12,10 +13,17 @@
     <div class="videoWrapper">
         <div id="player"></div>
     </div>
-    
+
     <div>
         <button type="button" onclick="toggle();">Play/Pause (p)</button>
         <button type="button" onclick="replay();">Replay (r)</button>
+    </div>
+
+    <hr>
+
+    <div>
+        <input type="url" id="url" placeholder="Load new youtube url..."/>
+        <button type="button" onclick="load();">Load</button>
     </div>
 
     <script src="script.js"></script>
