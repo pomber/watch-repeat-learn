@@ -1,0 +1,15 @@
+{
+  "name": "watch-repeat-learn",
+  "authors": [
+    "pomber"
+  ],
+  "private": true,
+  "dependencies": {
+    "polymer": "polymer/polymer#^1.4.0",
+    "app-route": "PolymerElements/app-route#^0.9.1",
+    "google-youtube": "GoogleWebComponents/google-youtube#^1.2.1"
+  },
+  "devDependencies": {
+    "web-component-tester": "^4.0.0"
+  }
+}

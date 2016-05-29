@@ -1,6 +1,6 @@
 {
   "firebase": "watchrepeatlearn",
-  "public": "public",
+  "public": "build/bundled",
   "ignore": [
     "README.md",
     "firebase.json",
