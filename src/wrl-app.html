@@ -55,7 +55,7 @@
     </google-youtube>
     
     <template is="dom-repeat" items="{{splits}}">
-        <paper-item raised class="split">
+        <paper-item raised class="split" on-tap="_replay">
             <paper-item-body two-line>
                 <div>From {{item.start}} to {{item.end}}</div>
                 <div secondary>Jan 17, 2014</div>
@@ -119,6 +119,13 @@
           } else {
               this.$.fab.icon = "av:play-arrow";
           }
+      },
+      
+      _replay: function(e) {
+          var split = e.model.item;
+          var video = this.$.video;
+          console.log("Seeking to: " + split.start);
+          video.seekTo(split.start);          
       },
 
     });
