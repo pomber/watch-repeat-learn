@@ -44,13 +44,13 @@
           
           if (state === 1 && !this._updateTimeInterval) {
               this._updateTimeInterval =              
-                setInterval(this._updateTime.bind(this), 200);
+                setInterval(this._updateTime.bind(this), 250);
           }          
       },
       
       _updateTime: function() {
           var time = this.getCurrentTime();
-          console.log("Time: " + time);          
+          this.fire('wrl-player-time-change', { time: time });
       },
       
       _replay: function(e) {

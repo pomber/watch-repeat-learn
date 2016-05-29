@@ -96,6 +96,8 @@
 
       listeners: {
         'google-youtube-state-change': '_onStateChange',
+        'wrl-player-time-change': '_onTimeChange',
+        
       },
 
     //   _routePageChanged: function(page) {
@@ -128,6 +130,11 @@
           } else {
               this.$.fab.icon = "av:play-arrow";
           }
+      },
+      
+      _onTimeChange: function(e) {
+          var time = e.detail.time;
+          console.log("Time: " + time);          
       },
       
       _replay: function(e) {
