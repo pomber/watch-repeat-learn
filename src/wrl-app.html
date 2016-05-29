@@ -9,6 +9,7 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
 <link rel="import" href="wrl-player.html">
+<link rel="import" href="wrl-current-split.html">
 
 <dom-module id="wrl-app">
 
@@ -45,14 +46,8 @@
     <wrl-player id="player">
     </wrl-player>
     
-    <template is="dom-if" if="[[selectedSplit]]">
-        <paper-card>
-            <div class="card-content">
-                Emmentaler or Emmental is a yellow, medium-hard cheese that originated in the area around Emmental.            
-                <p class="light">{{selectedSplit.start}} - {{selectedSplit.end}}</p>
-            </div>
-        </paper-card>
-    </template>
+    <wrl-current-split split="[[selectedSplit]]">
+    </wrl-current-split>    
     
     <template is="dom-repeat" items="{{splits}}">
         <paper-item raised class="split" on-tap="_replay">
@@ -79,7 +74,7 @@
               type: Array,
               value: []
           },
-          selectedSplit : Object
+          selectedSplit : Object,
       },
 
       observers: [
