@@ -1,6 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<!--
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
+-->
 <link rel="import" href="../bower_components/google-youtube/google-youtube.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/iron-icons/av-icons.html">
@@ -22,13 +24,14 @@
       }
 
     </style>
-
+<!--
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
         pattern="/:page"
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
+-->
         
     <paper-fab 
         id="fab"
@@ -55,16 +58,16 @@
       },
 
       observers: [
-        '_routePageChanged(routeData.page)'
+        // '_routePageChanged(routeData.page)'
       ],
 
       listeners: {
         'google-youtube-state-change': '_onStateChange',
       },
 
-      _routePageChanged: function(page) {
-        console.log("Route changed: " + page);
-      },
+    //   _routePageChanged: function(page) {
+    //     console.log("Route changed: " + page);
+    //   },
       
       _toggleState: function() {
           var video = this.$.video;
