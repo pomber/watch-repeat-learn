@@ -13,15 +13,23 @@
   <template>
 
     <style>
+        
+      :host {
+        display: block;
+      }       
       
       .light { color: var(--paper-grey-600); }
+      
+      paper-card {
+          display: block;
+      }
 
     </style>
         
     <template is="dom-if" if="[[split]]">
         <paper-card>
             <div class="card-content">                
-                <paper-textarea value="{{split.text}}" readonly>
+                <paper-textarea value="{{split.text}}">
                 </paper-textarea>
                 <p class="light">{{split.start}} - {{split.end}}</p>
             </div>
