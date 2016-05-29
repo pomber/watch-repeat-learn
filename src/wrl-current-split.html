@@ -29,7 +29,7 @@
     <template is="dom-if" if="[[split]]">
         <paper-card>
             <div class="card-content">                
-                <paper-textarea value="{{split.text}}">
+                <paper-textarea value="{{split.text}}" rows=3 max-rows=3>
                 </paper-textarea>
                 <p class="light">{{split.start}} - {{split.end}}</p>
             </div>
