@@ -9,6 +9,7 @@
 
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
 <dom-module id="wrl-app">
@@ -32,6 +33,8 @@
           background: white;
           margin: 4px 0px;
       }
+      
+      .light { color: var(--paper-grey-600); }
 
     </style>
 <!--
@@ -53,6 +56,13 @@
         video-id="DpbEg-zVcpU" 
         chromeless fluid>
     </google-youtube>
+    
+    <paper-card>
+        <div class="card-content">
+            Emmentaler or Emmental is a yellow, medium-hard cheese that originated in the area around Emmental.            
+            <p class="light">0:13 - 0:45</p>
+        </div>
+    </paper-card>
     
     <template is="dom-repeat" items="{{splits}}">
         <paper-item raised class="split" on-tap="_replay">
