@@ -2,6 +2,8 @@
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/google-youtube/google-youtube.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/iron-icons/av-icons.html">
 
 <dom-module id="wrl-app">
 
@@ -12,7 +14,12 @@
       :host {
         display: block;
       }
-
+      
+      paper-fab {
+          position: absolute;
+          right: 25px;
+          bottom: 30px;          
+      }
 
     </style>
 
@@ -23,10 +30,18 @@
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
         
-    <google-youtube id="youtube"
+    <paper-fab 
+        id="fab"
+        icon="av:play-arrow"
+        on-tap="_toggleState">
+    </paper-fab>
+        
+    <google-youtube id="video"
         video-id="DpbEg-zVcpU" 
         chromeless fluid>
     </google-youtube>
+    
+    
 
   </template>
 
@@ -43,8 +58,30 @@
         '_routePageChanged(routeData.page)'
       ],
 
+      listeners: {
+        'google-youtube-state-change': '_onStateChange',
+      },
+
       _routePageChanged: function(page) {
         console.log("Route changed: " + page);
+      },
+      
+      _toggleState: function() {
+          var video = this.$.video;
+          if (video.state == 1) {
+              video.pause();
+          } else {
+              video.play();
+          }
+      },
+      
+      _onStateChange: function(e) {
+          var state = e.detail.data;
+          if (state == 1) {
+              this.$.fab.icon = "av:pause";
+          } else {
+              this.$.fab.icon = "av:play-arrow";
+          }
       },
 
     });
