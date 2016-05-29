@@ -1,8 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<!--
-<link rel="import" href="../bower_components/app-route/app-location.html">
-<link rel="import" href="../bower_components/app-route/app-route.html">
--->
+
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/iron-icons/av-icons.html">
 
@@ -38,14 +35,6 @@
       .light { color: var(--paper-grey-600); }
 
     </style>
-<!--
-    <app-location route="{{route}}"></app-location>
-    <app-route
-        route="{{route}}"
-        pattern="/:page"
-        data="{{routeData}}"
-        tail="{{subroute}}"></app-route>
--->
         
     <paper-fab 
         id="fab"
@@ -56,12 +45,14 @@
     <wrl-player id="player">
     </wrl-player>
     
-    <paper-card>
-        <div class="card-content">
-            Emmentaler or Emmental is a yellow, medium-hard cheese that originated in the area around Emmental.            
-            <p class="light">0:13 - 0:45</p>
-        </div>
-    </paper-card>
+    <template is="dom-if" if="[[selectedSplit]]">
+        <paper-card>
+            <div class="card-content">
+                Emmentaler or Emmental is a yellow, medium-hard cheese that originated in the area around Emmental.            
+                <p class="light">{{selectedSplit.start}} - {{selectedSplit.end}}</p>
+            </div>
+        </paper-card>
+    </template>
     
     <template is="dom-repeat" items="{{splits}}">
         <paper-item raised class="split" on-tap="_replay">
@@ -88,6 +79,7 @@
               type: Array,
               value: []
           },
+          selectedSplit : Object
       },
 
       observers: [
@@ -96,13 +88,8 @@
 
       listeners: {
         'google-youtube-state-change': '_onStateChange',
-        'wrl-player-time-change': '_onTimeChange',
-        
+        'wrl-player-time-change': '_onTimeChange',        
       },
-
-    //   _routePageChanged: function(page) {
-    //     console.log("Route changed: " + page);
-    //   },
       
       _toggleState: function() {
           var video = this.$.player;
@@ -110,16 +97,8 @@
             video.play();
           } else {
             video.pause();
-            
-            var start = this.splits.length ?
-                this.splits[0].end : 0;
-        
-            var split = {
-                start: start,
-                end: video.getCurrentTime(),
-            };
-            
-            this.unshift("splits", split);
+            this.split();
+            this._updateSelected();
           }
       },
       
@@ -133,8 +112,15 @@
       },
       
       _onTimeChange: function(e) {
-          var time = e.detail.time;
-          console.log("Time: " + time);          
+          var time = e.detail.time;           
+          console.log("Time: " + time);
+          this._updateSelected();
+      },
+      
+      _updateSelected: function(time) {
+          var video = this.$.player;
+          time = time || video.getCurrentTime();
+          this.selectedSplit = this.getSplit(time);
       },
       
       _replay: function(e) {
@@ -143,6 +129,29 @@
           console.log("Seeking to: " + split.start);
           video.seekTo(split.start);          
       },
+      
+      split: function() {          
+        var video = this.$.player;
+        
+        var start = this.splits.length ?
+            this.splits[0].end : 0;
+    
+        var split = {
+            start: start,
+            end: video.getCurrentTime(),
+        };
+        
+        this.unshift("splits", split);
+      },
+      
+      getSplit: function(time) {          
+          for (var i = 0; i < this.splits.length; ++i) {
+              var split = this.splits[i];
+              if (time <= split.end + 0.01) {
+                  return split;
+              }
+          }
+      }
 
     });
 
