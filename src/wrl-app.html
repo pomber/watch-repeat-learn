@@ -7,6 +7,10 @@
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/iron-icons/av-icons.html">
 
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
 <dom-module id="wrl-app">
 
   <template>
@@ -21,6 +25,11 @@
           position: absolute;
           right: 25px;
           bottom: 30px;          
+      }
+      
+      .split {
+          background: white;
+          margin: 2px 0px;
       }
 
     </style>
@@ -44,7 +53,17 @@
         chromeless fluid>
     </google-youtube>
     
-    
+    <template is="dom-repeat" items="{{splits}}">
+        <paper-item raised class="split">
+            <paper-item-body two-line>
+                <div>From {{item.start}} to {{item.end}}</div>
+                <div secondary>Jan 17, 2014</div>
+            </paper-item-body>
+            <paper-icon-button icon="av:play-arrow">
+            </paper-icon-button>
+        </paper-item>
+    </template>   
+        
 
   </template>
 
@@ -55,6 +74,14 @@
       is: 'wrl-app',
 
       properties: {
+          splits: {
+              type: Array,
+              value: [
+                  { start: 25, end: 30 },
+                  { start: 14, end: 25 },
+                  { start: 0, end: 14 },                  
+              ]
+          },
       },
 
       observers: [
