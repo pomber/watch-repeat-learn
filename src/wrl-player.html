@@ -1,0 +1,94 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/google-youtube/google-youtube.html">
+
+<dom-module id="wrl-player">
+
+  <template>
+
+    <style>
+
+    </style>
+        
+    <google-youtube id="video"
+        video-id="DpbEg-zVcpU" 
+        chromeless fluid>
+    </google-youtube>
+    
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'wrl-player',
+
+      properties: {
+      },
+
+      listeners: {
+        'google-youtube-state-change': '_onStateChange',
+      },
+
+      _toggleState: function() {
+          var video = this.$.video;
+          if (video.state !== 1) {
+            video.play();
+          } else {
+            video.pause();
+            
+            var start = this.splits.length ?
+                this.splits[0].end : 0;
+        
+            var split = {
+                start: start,
+                end: video.currenttime,
+            };
+            
+            this.unshift("splits", split);
+          }
+      },
+      
+      _onStateChange: function(e) {
+          var state = e.detail.data;
+          console.log(state);
+      },
+      
+      _replay: function(e) {
+          var split = e.model.item;
+          var video = this.$.video;
+          console.log("Seeking to: " + split.start);
+          video.seekTo(split.start);          
+      },
+      
+      isPlaying: function() {          
+          var video = this.$.video;
+          return video.state === 1;
+      },
+      
+      getCurrentTime: function() {          
+          var video = this.$.video;
+          return video.currenttime;
+      },
+      
+      play: function() {         
+          var video = this.$.video;
+          return video.play();          
+      },
+      
+      pause: function() {         
+          var video = this.$.video;
+          return video.pause();          
+      },
+      
+      seekTo: function(time) {         
+          var video = this.$.video;
+          return video.seekTo(time);          
+      },
+
+    });
+
+  </script>
+
+</dom-module>

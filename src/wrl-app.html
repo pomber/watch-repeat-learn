@@ -3,7 +3,6 @@
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 -->
-<link rel="import" href="../bower_components/google-youtube/google-youtube.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/iron-icons/av-icons.html">
 
@@ -11,6 +10,8 @@
 <link rel="import" href="../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="wrl-player.html">
 
 <dom-module id="wrl-app">
 
@@ -52,10 +53,8 @@
         on-tap="_toggleState">
     </paper-fab>
         
-    <google-youtube id="video"
-        video-id="DpbEg-zVcpU" 
-        chromeless fluid>
-    </google-youtube>
+    <wrl-player id="player">
+    </wrl-player>
     
     <paper-card>
         <div class="card-content">
@@ -104,8 +103,8 @@
     //   },
       
       _toggleState: function() {
-          var video = this.$.video;
-          if (video.state !== 1) {
+          var video = this.$.player;
+          if (!video.isPlaying()) {
             video.play();
           } else {
             video.pause();
@@ -115,7 +114,7 @@
         
             var split = {
                 start: start,
-                end: video.currenttime,
+                end: video.getCurrentTime(),
             };
             
             this.unshift("splits", split);
@@ -133,7 +132,7 @@
       
       _replay: function(e) {
           var split = e.model.item;
-          var video = this.$.video;
+          var video = this.$.player;
           console.log("Seeking to: " + split.start);
           video.seekTo(split.start);          
       },
