@@ -75,6 +75,7 @@
               value: []
           },
           selectedSplit : Object,
+          replayMode: Boolean
       },
 
       observers: [
@@ -109,7 +110,17 @@
       _onTimeChange: function(e) {
           var time = e.detail.time;           
           console.log("Time: " + time);
-          this._updateSelected();
+          
+          if (this.replayMode 
+                && time >= this.selectedSplit.end) {
+              var video = this.$.player;
+              video.pause();
+              this.replayMode = false;
+              return;                  
+          } 
+          
+          this._updateSelected();              
+          
       },
       
       _updateSelected: function(time) {
@@ -125,7 +136,10 @@
           var video = this.$.player;
           console.log("Seeking to: " + split.start);
           video.seekTo(split.start);
-          this._updateSelected(split.start);          
+          this._updateSelected(split.start);      
+          
+          this.replayMode = true;
+          video.play();    
       },
       
       split: function() {          
