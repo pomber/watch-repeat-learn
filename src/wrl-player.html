@@ -10,8 +10,7 @@
 
     </style>
         
-    <google-youtube id="video"
-        video-id="DpbEg-zVcpU" 
+    <google-youtube id="video" 
         chromeless fluid>
     </google-youtube>
     
@@ -83,6 +82,11 @@
       seekTo: function(time) {         
           var video = this.$.video;
           return video.seekTo(time);          
+      },
+      
+      setId: function(id) {   
+          var video = this.$.video;
+          video.videoId = id;          
       },
 
     });

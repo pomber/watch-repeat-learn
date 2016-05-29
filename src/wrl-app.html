@@ -1,11 +1,13 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/iron-icons/av-icons.html">
 
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-item/paper-item-body.html">
-<link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
 <link rel="import" href="wrl-player.html">
@@ -36,6 +38,12 @@
       .light { color: var(--paper-grey-600); }
 
     </style>
+    
+    <app-location route="{{route}}"></app-location>
+    <app-route
+        route="{{route}}"
+        pattern="/:videoid"
+        data="{{routeData}}"></app-route>
         
     <paper-fab 
         id="fab"
@@ -70,6 +78,8 @@
       is: 'wrl-app',
 
       properties: {
+          route: Object,
+          routeData: Object,
           splits: {
               type: Array,
               value: []
@@ -79,7 +89,7 @@
       },
 
       observers: [
-        // '_routePageChanged(routeData.page)'
+        '_routeChanged(routeData.videoid)'
       ],
 
       listeners: {
@@ -121,6 +131,14 @@
           
           this._updateSelected();              
           
+      },
+      
+      _routeChanged: function(videoId) {
+          this.splits = [];
+          this.selectedSplit = null;
+          this.replayMode = false;
+          var video = this.$.player;
+          video.setId(videoId);          
       },
       
       _updateSelected: function(time) {
