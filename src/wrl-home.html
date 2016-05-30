@@ -10,6 +10,7 @@
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
 
 <dom-module id="wrl-home">
 
@@ -20,17 +21,39 @@
       :host {
         display: block;
       }
+      
+      paper-card {
+          display: block;
+          margin: 5px;
+      }
+      
+      paper-button {
+          width: 100%;
+      }
+      
+      app-toolbar {
+        /* Toolbar is the main header, so give it some color */
+        background-color: #3E3855;
+        font-family: 'Roboto', Helvetica, sans-serif;
+        color: white;
+        --app-toolbar-font-size: 24px;
+      }
 
     </style>
     
-    <app-header>
-        <app-toolbar>
-            <div title>WRL</div>
-        </app-toolbar>
-    </app-header>
+    <app-toolbar>
+        <div title>Watch Repeat Learn</div>
+    </app-toolbar>
     
-    <paper-input value="{{url}}" label="YouTube URL" autofocus type="search"></paper-input>
-    <paper-button on-tap="load">Load</paper-button>
+    <paper-card heading="Load YouTube Video">
+        <div class="card-content">
+            <paper-input value="{{url}}" label="YouTube URL" autofocus type="search"></paper-input>            
+        </div>
+        <div class="card-actions">
+            <paper-button on-tap="load" raised>Load Video</paper-button>
+        </div>
+    </paper-card>
+    
 
   </template>
 
