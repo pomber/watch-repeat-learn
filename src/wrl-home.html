@@ -1,0 +1,58 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+<dom-module id="wrl-home">
+
+  <template>
+
+    <style>
+
+      :host {
+        display: block;
+      }
+
+    </style>
+    
+    <app-header>
+        <app-toolbar>
+            <div title>WRL</div>
+        </app-toolbar>
+    </app-header>
+    
+    <paper-input value="{{videoId}}" label="YouTube ID"></paper-input>
+    <paper-button on-tap="load">Load</paper-button>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'wrl-home',
+
+      properties: {
+          videoId: {
+              type: String,
+              value: "Lwvi1u4XXzc"
+          }
+      },
+      
+      load: function() {
+          this.fire("wrl-home-load", this.videoId);
+      },      
+
+    });
+
+  </script>
+
+</dom-module>

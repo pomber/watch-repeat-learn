@@ -1,5 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 
@@ -10,8 +13,15 @@
 <link rel="import" href="../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
-<link rel="import" href="wrl-player.html">
-<link rel="import" href="wrl-current-split.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animatable.html">
+<link rel="import" href="../bower_components/neon-animation/animations/slide-left-animation.html">
+<link rel="import" href="../bower_components/neon-animation/animations/slide-from-right-animation.html">
+<link rel="import" href="../bower_components/neon-animation/animations/slide-right-animation.html">
+<link rel="import" href="../bower_components/neon-animation/animations/slide-from-left-animation.html">
+
+<link rel="import" href="wrl-home.html">
+<link rel="import" href="wrl-editor.html">
 
 <dom-module id="wrl-app">
 
@@ -22,52 +32,29 @@
       :host {
         display: block;
       }
-      
-      paper-fab {
-          position: fixed;
-          right: 25px;
-          bottom: 30px;          
-          z-index: 10;
-      }
-      
-      .split {
-          background: white;
-          margin: 4px 0px;
-      }
-      
-      .light { color: var(--paper-grey-600); }
 
     </style>
-    
+        
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
         pattern="/:videoid"
         data="{{routeData}}"></app-route>
         
-    <paper-fab 
-        id="fab"
-        icon="av:play-arrow"
-        on-tap="_toggleState">
-    </paper-fab>
-        
-    <wrl-player id="player">
-    </wrl-player>
-    
-    <wrl-current-split split="[[selectedSplit]]">
-    </wrl-current-split>    
-    
-    <template is="dom-repeat" items="{{splits}}">
-        <paper-item raised class="split" on-tap="_replay">
-            <paper-item-body two-line>
-                <div>From {{item.start}} to {{item.end}}</div>
-                <div secondary>{{item.text}}</div>
-            </paper-item-body>
-            <paper-icon-button icon="av:play-arrow">
-            </paper-icon-button>
-        </paper-item>
-    </template>   
-        
+    <neon-animated-pages selected='{{page}}'
+                     attr-for-selected='key'>                     
+        <neon-animatable key='home'
+                     entry-animation='slide-from-left-animation'
+                     exit-animation='slide-left-animation'>
+            <wrl-home></wrl-home>
+        </neon-animatable>
+        <neon-animatable key='editor'
+                     entry-animation='slide-from-right-animation'
+                     exit-animation='slide-right-animation'>
+            <wrl-editor video-id="{{videoid}}"></wrl-editor>
+        </neon-animatable>        
+    </neon-animated-pages>
+               
 
   </template>
 
@@ -80,108 +67,26 @@
       properties: {
           route: Object,
           routeData: Object,
-          splits: {
-              type: Array,
-              value: []
-          },
-          selectedSplit : Object,
-          replayMode: Boolean
+          page: String,
+          videoid: String
+      },
+
+      listeners: {
+        'wrl-home-load': '_onVideoSelected',        
       },
 
       observers: [
         '_routeChanged(routeData.videoid)'
       ],
-
-      listeners: {
-        'google-youtube-state-change': '_onStateChange',
-        'wrl-player-time-change': '_onTimeChange',        
-      },
-      
-      _toggleState: function() {
-          var video = this.$.player;
-          if (!video.isPlaying()) {
-            video.play();
-          } else {
-            video.pause();
-            this.split();
-            this._updateSelected();
-          }
-      },
-      
-      _onStateChange: function(e) {
-          var state = e.detail.data;
-          if (state == 1) {
-              this.$.fab.icon = "av:pause";
-          } else {
-              this.$.fab.icon = "av:play-arrow";
-          }
-      },
-      
-      _onTimeChange: function(e) {
-          var time = e.detail.time;           
-          console.log("Time: " + time);
-          
-          if (this.replayMode 
-                && time >= this.selectedSplit.end) {
-              var video = this.$.player;
-              video.pause();
-              this.replayMode = false;
-              return;                  
-          } 
-          
-          this._updateSelected();              
-          
-      },
       
       _routeChanged: function(videoId) {
-          this.splits = [];
-          this.selectedSplit = null;
-          this.replayMode = false;
-          var video = this.$.player;
-          video.setId(videoId);          
-      },
+          this.videoid = videoId;
+          this.page = videoId ? "editor" : "home";           
+      },      
       
-      _updateSelected: function(time) {
-          var video = this.$.player;
-          if (time === undefined) {
-            time = video.getCurrentTime();              
-          }
-          this.selectedSplit = this.getSplit(time);
-      },
-      
-      _replay: function(e) {
-          var split = e.model.item;
-          var video = this.$.player;
-          console.log("Seeking to: " + split.start);
-          video.seekTo(split.start);
-          this._updateSelected(split.start);      
-          
-          this.replayMode = true;
-          video.play();    
-      },
-      
-      split: function() {          
-        var video = this.$.player;
-        
-        var start = this.splits.length ?
-            this.splits[0].end : 0;
-    
-        var split = {
-            start: start,
-            end: video.getCurrentTime(),
-            text: "",
-        };
-        
-        this.unshift("splits", split);
-      },
-      
-      getSplit: function(time) {          
-          for (var i = 0; i < this.splits.length; ++i) {
-              var split = this.splits[i];
-              if (time > split.start - 0.01) {
-                  return split;
-              }
-          }
+      _onVideoSelected: function(e) {
+          var videoId = e.detail;
+          this.set("routeData.videoid",videoId);
       }
 
     });

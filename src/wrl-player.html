@@ -10,7 +10,8 @@
 
     </style>
         
-    <google-youtube id="video" 
+    <google-youtube id="video"
+        video-id="[[videoId]]" 
         chromeless fluid>
     </google-youtube>
     
@@ -24,6 +25,9 @@
       is: 'wrl-player',
 
       properties: {
+          videoId: {
+              type: String,              
+          }
       },
 
       listeners: {
