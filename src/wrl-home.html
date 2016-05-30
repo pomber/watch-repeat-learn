@@ -29,7 +29,7 @@
         </app-toolbar>
     </app-header>
     
-    <paper-input value="{{videoId}}" label="YouTube ID"></paper-input>
+    <paper-input value="{{url}}" label="YouTube ID" autofocus></paper-input>
     <paper-button on-tap="load">Load</paper-button>
 
   </template>
@@ -41,15 +41,24 @@
       is: 'wrl-home',
 
       properties: {
-          videoId: {
+          url: {
               type: String,
-              value: "Lwvi1u4XXzc"
+              value: "https://www.youtube.com/watch?v=wMhq1o0DULM"
           }
       },
       
       load: function() {
-          this.fire("wrl-home-load", this.videoId);
+          var videoId = this._getYoutubeId(this.url);
+          this.fire("wrl-home-load", videoId);
       },      
+      
+      _getYoutubeId: function(url) {
+          var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+          var match = url.match(regExp);
+          if (match && match[2].length == 11) {
+              return match[2];
+          }
+      },
 
     });
 
