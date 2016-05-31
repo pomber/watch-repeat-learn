@@ -1,0 +1,51 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/iron-icons/av-icons.html">
+
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
+
+<dom-module id="wrl-split">
+
+  <template>
+
+    <style>
+      
+      .split {
+          background: white;
+          margin: 4px 0px;
+      }
+      
+      .light { color: var(--paper-grey-600); }
+
+    </style>
+    
+    <paper-item raised class="split">
+        <paper-item-body two-line>
+            <div>From {{split.start}} to {{split.end}}</div>
+            <div secondary>{{split.text}}</div>
+        </paper-item-body>
+        <paper-icon-button icon="av:play-arrow">
+        </paper-icon-button>
+    </paper-item>
+        
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'wrl-split',
+
+      properties: {
+          split : Object,
+      },
+
+    });
+
+  </script>
+
+</dom-module>
