@@ -29,9 +29,10 @@
     <template is="dom-if" if="[[split]]">
         <paper-card>
             <div class="card-content">                
-                <paper-textarea value="{{split.text}}" rows=3 max-rows=3 autocomplete>
+                <paper-textarea 
+                        label="{{split.start}} - {{split.end}}" 
+                        value="{{split.text}}" autocomplete>
                 </paper-textarea>
-                <p class="light">{{split.start}} - {{split.end}}</p>
             </div>
         </paper-card>
     </template>
